@@ -1,0 +1,27 @@
+---
+# defaults file for tomee
+#
+tomee_binary: "apache-tomee-8.0.13-webprofile.tar.gz"
+tomee_dirname: "tomee8"
+tomee_install_dir: "/opt/apache"
+
+catalina_home: "{{ tomee_install_dir }}/{{ tomee_dirname }}"
+tomee_owner: "tomcat"
+tomee_group: "tomcat"
+
+ajp_port: 8009
+shutdown_port: 8005
+http_port: 8080
+http_timeout: 20000
+https_port: 8443
+https_max_threads: 150
+default_host: "localhost"
+
+tomcat_thread_pool: 150
+tomcat_min_spare_threads: 4
+
+jvm_name: "instance1"
+catalina_base: "{{ catalina_home }}/jvms/{{ jvm_name }}"
+
+server_xml_template: server.xml.j2
+tomcat_users_xml_template: tomcat-users.xml.j2

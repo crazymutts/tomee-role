@@ -1,0 +1,28 @@
+---
+# tasks file for tomee
+
+# Prerequisites are:
+#  * OS packages:
+#      * Debian/Ubuntu: selinux-utils, python3-selinux,
+#                       selinux-policy-default
+#      * EL/Rocky: libselinux-utils
+#  * openssl packages (for creating self-signed cert)
+#  * tomee user and group (tomee_owner & tomee_group)
+#  * install_dir created and ownership
+#  * catalina_home created (inside install_dir) and ownership
+#  * jvm directory (catalina_base) created and ownership
+#
+- include: prereq.yml
+  become: yes
+
+- include: install.yml
+  become: yes
+  become_user: "{{ tomee_owner }}"
+
+- include: config.yml
+  become: yes
+  become_user: "{{ tomee_owner }}"
+
+- include: system.yml
+  become: yes
+  become_user: "root"

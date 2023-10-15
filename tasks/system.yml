@@ -1,0 +1,28 @@
+---
+
+- name: Rocky/Fedora/RedHat tomee polkit so user can stop and start service
+  template:
+    src: 95-tomee.rules.j2
+    dest: "/etc/polkit-1/rules.d/95-{{ tomee_dirname }}.rules"
+    mode: 0644
+  when: ansible_os_family == "Rocky" or ansible_os_family == "RedHat"
+  notify: Restart polkit
+
+- name: Debian/Ubuntu polkit sudo rule so user can stop and start service
+  template:
+    src: 95-tomcat-sudoers.j2
+    dest: "/etc/sudoers.d/95-tomcat-{{ tomee_dirname }}"
+    mode: 0440
+  when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+
+- name: systemd - install service unit file
+  template:
+    src: systemd-unit.service.j2
+    dest: "/etc/systemd/system/{{ tomee_dirname }}@.service"
+    mode: 0644
+  notify: Reload systemd
+
+- name: systemd - enable the tomee jvm instance
+  systemd:
+    name: "{{ tomee_dirname }}@{{ jvm_name }}.service"
+    enabled: true

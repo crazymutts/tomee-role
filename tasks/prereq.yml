@@ -1,0 +1,39 @@
+---
+- name: create tomee_install_dir
+  file:
+    path: "{{ tomee_install_dir }}"
+    state: directory
+    mode: 0755
+    owner: "{{ tomee_owner }}"
+    group: "{{ tomee_group }}"
+
+- name: create catalina_home directory
+  file:
+    path: "{{ catalina_home }}"
+    state: directory
+    mode: 0755
+    owner: "{{ tomee_owner }}"
+    group: "{{ tomee_group }}"
+
+- name: create jvm instance directory
+  file:
+    path: "{{ catalina_base }}"
+    state: directory
+    mode: 0755
+    owner: "{{ tomee_owner }}"
+    group: "{{ tomee_group }}"
+
+- name: see if TomEE is installed already
+  find:
+    paths: "{{ catalina_home }}"
+    recurse: yes
+    patterns: "tomee-common-*.jar"
+  register: findoutput
+
+- set_fact:
+    tomee_is_installed: false
+  when: findoutput.matched == 0
+
+- set_fact:
+    tomee_is_installed: true
+  when: not findoutput.matched == 0

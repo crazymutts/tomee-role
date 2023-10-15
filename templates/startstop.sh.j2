@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Set job control so EL 8's bash allows catalina.sh to spin off 
+# java in the background
+set -m
+
+HOME_save=$CATALINA_HOME
+BASE_save=$CATALINA_BASE
+
+export CATALINA_HOME={{ catalina_home }}
+export CATALINA_BASE={{ catalina_base }}
+
+case "$1" in
+
+  start)
+    $CATALINA_HOME/bin/catalina.sh start
+    ;;
+
+  stop)
+    $CATALINA_HOME/bin/catalina.sh stop 120 -force
+    ;;
+
+  restart)
+    $CATALINA_HOME/bin/catalina.sh stop 120 -force
+    $CATALINA_HOME/bin/catalina.sh start
+    ;;
+
+  status)
+    if [ -f ./{{ jvm_name }}.pid ] ; then
+      echo PID file {{ jvm_name }}.pid exist and contains:
+      cat ./{{ jvm_name }}.pid
+      ps -eaf | grep $(cat {{ jvm_name }}.pid) | grep -v grep
+    else
+      echo No PID file found, so here is a grep of the process table
+      ps -eaf | grep {{ jvm_name }}
+    fi
+    ;;
+
+  *)
+    echo Please specify start or stop
+    ;;
+esac
+
+export CATALINA_HOME=$HOME_save
+export CATALINA_BASE=$BASE_save

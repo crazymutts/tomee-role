@@ -1,0 +1,17 @@
+---
+# vars file for tomee
+#
+# In the defaults/main.yml we already have defaults set for:
+#
+# tomee_binary                  tomee_dirname
+# tomee_install_dir             catalina_home
+# tomee_owner                   tomee_group
+# jvm_name                      catalina_base
+#
+# They can be overridden here to take effect for all instances of
+# this role.
+#
+# Examples:
+# tomee_binary: "apache-tomee-8.0.12-webprofile.tar.gz"
+# tomee_dirname: "tomee8"
+# tomee_install_dir: "/opt/apache"

@@ -1,0 +1,74 @@
+---
+
+- name: instance directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  loop:
+    - "{{ catalina_base }}/bin"
+    - "{{ catalina_base }}/lib"
+    - "{{ catalina_base }}/logs"
+    - "{{ catalina_base }}/temp"
+    - "{{ catalina_base }}/webapps"
+    - "{{ catalina_base }}/work"
+    - "{{ catalina_base }}/jvms"
+
+- name: copy conf directory
+  shell:
+    cmd: "tar c -C {{ catalina_home }} conf | tar -x -C {{ catalina_base }} -f -"
+    creates: "{{ catalina_base }}/conf/context.xml"
+    warn: false
+
+- name: copy tomcat-juli.jar to bin dir
+  shell:
+    cmd: "cp {{ catalina_home }}/bin/tomcat-juli.jar {{ catalina_base }}/bin/tomcat-juli.jar"
+    creates: "{{ catalina_base }}/bin/tomcat-juli.jar"
+
+- name: create server.xml from default or custom template
+  template:
+    src: "{{ server_xml_template }}"
+    dest: "{{ catalina_base }}/conf/server.xml"
+    mode: 0644
+
+- name: create tomcat-users.xml from default or custom template
+  template:
+    src: "{{ tomcat_users_xml_template }}"
+    dest: "{{ catalina_base }}/conf/tomcat-users.xml"
+    mode: 0640
+
+- name: create default_host directory
+  file: 
+    path: "{{ catalina_base }}/conf/Catalina/{{ default_host }}"
+    state: directory
+    mode: 0775
+
+- name: create manager.xml from template
+  template:
+    src: manager.xml.j2
+    dest: "{{ catalina_base }}/conf/Catalina/{{ default_host }}/manager.xml"
+    mode: 0775
+
+- name: create host-manager.xml from template
+  template:
+    src: host-manager.xml.j2
+    dest: "{{ catalina_base }}/conf/Catalina/{{ default_host }}/host-manager.xml"
+    mode: 0775
+
+- name: copy docs directory
+  shell:
+    cmd: "tar c -C {{ catalina_home }}/webapps docs | tar -x -C {{ catalina_base }}/webapps -f -"
+    creates: "{{ catalina_base }}/webapps/docs/index.html"
+    warn: false
+
+- name: copy ROOT directory (the Tomcat splash page)
+  shell:
+    cmd: "tar c -C {{ catalina_home }}/webapps ROOT | tar -x -C {{ catalina_base }}/webapps -f -"
+    creates: "{{ catalina_base }}/webapps/ROOT/index.jsp"
+    warn: false
+
+- name: create setenv.sh from template
+  template:
+    src: setenv.sh.j2
+    dest: "{{ catalina_base }}/bin/setenv.sh"
+    mode: 0775

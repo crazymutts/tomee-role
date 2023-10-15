@@ -1,0 +1,6 @@
+%{{ tomee_group }} ALL=(ALL) NOPASSWD:/usr/bin/systemctl start {{ tomee_dirname }}*, \
+	/usr/bin/systemctl stop {{ tomee_dirname }}*, \
+	/usr/bin/systemctl restart {{ tomee_dirname }}*, \
+	/usr/bin/systemctl status {{ tomee_dirname }}*, \
+        /usr/bin/systemctl enable {{ tomee_dirname }}*, \
+        /usr/bin/systemctl disable {{ tomee_dirname }}*

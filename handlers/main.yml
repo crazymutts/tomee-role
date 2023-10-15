@@ -1,0 +1,13 @@
+---
+# handlers file for tomee
+#
+
+- name: Restart polkit
+  systemd:
+    name: polkit.service
+    state: restarted
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: true
+

@@ -1,0 +1,16 @@
+---
+
+- name: 1/2 Install TomEE - transfer .tar.gz file
+  copy:
+    src: "{{ tomee_binary }}"
+    dest: "{{ tomee_install_dir }}"
+    mode: 0755
+    owner: "{{ tomee_owner }}"
+    group: "{{ tomee_group }}"
+  when: not tomee_is_installed
+
+- name: 2/2 Install TomEE - unzip and untar
+  shell:
+    cmd: "gunzip -c {{ tomee_install_dir }}/{{ tomee_binary }} | tar -x -C {{ catalina_home }} --strip-components=1 -f -"
+    creates: "{{ catalina_home }}/LICENSE"
+  when: not tomee_is_installed
