@@ -35,6 +35,10 @@ THIS GOES IN A SHARED ROLES AREA IF YOU WANT TO USE A DEEP-PLAYBOOK
 DIRECTORY STRUCTURE.  EXAMPLES: /usr/share/ansible/roles or
 ~/.ansible/roles
 
+LINUX ONLY as of 2022 & 2023. The initial author is NOT a Windows 
+person in the slightest and has no access to other implementations of 
+UNIX operating systems.
+
 Ensure java JRE is installed and you know the JRE_HOME value for it
 If running Debian/Ubuntu, ensure the "acl" package is installed
 Ensure SELinux is off
@@ -271,8 +275,8 @@ Example Playbook
 	      ajp_port: 8010
 	      shutdown_port: 8006
 	      default_host: localhost
-	      #server_xml_template: "citmvmqsd04-server.xml.j2"
-	      #tomcat_users_xml_template: "citmvmqsd04-tomcat-users.xml.j2"
+	      #server_xml_template: "myserver.xml.j2"
+	      #tomcat_users_xml_template: "myserver-tomcat-users.xml.j2"
 
 	  - name: TomEE instande 1 jvm 2
 	    include_role:
@@ -461,7 +465,7 @@ start the JVM(s) if required.
 License
 -------
 
-BSD
+BSD 3
 
 Author Information
 ------------------
@@ -469,3 +473,15 @@ Author Information
 Role created as a learning exercise by Doug S. Started in Q3 of 2022.
 Despite this section being all about contact information, please do not 
 contact me.
+
+TomEE Advocacy
+--------------
+The initial author is an infrastructure guy, not a J2EE wizard. 
+What follows is OPINION only. That being said, what's going on over at 
+the Apache Foundation's TomEE project has been continuous and important. 
+There are obviously a lot of caring J2EE enthusiasts working on TomEE. 
+Such an active OSS project coupled with the availability of commercial 
+support via the project leader's own Tomitribe and other reputable 3rd 
+party support companies like TxMQ should help make TomEE a go-to choice 
+for implementing J2EE in the Cloud.
+
